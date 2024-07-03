@@ -1,0 +1,10 @@
+func (i *{{implementation}}) {{method}} {
+    i.applyDelay()
+
+    err := i.getErr()
+    if err != nil {
+        return err
+    }
+
+    return i.inner.{{method}}
+}
