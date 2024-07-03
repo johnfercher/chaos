@@ -22,7 +22,7 @@ type Example interface {
 		assert.Len(t, interfaces, 1)
 		assert.Equal(t, "Example", interfaces[0].Name)
 		assert.Len(t, interfaces[0].Methods, 1)
-		assert.Equal(t, interfaces[0].Methods[0].String(), "Add(ctx context.Context, id string) ()")
+		assert.Equal(t, interfaces[0].Methods[0].Signature(), "Add(ctx context.Context, id string) (error)")
 	})
 	t.Run("when has two interface, the return correctly", func(t *testing.T) {
 		// Arrange
@@ -45,9 +45,9 @@ type Example2 interface {
 		assert.Len(t, interfaces, 2)
 		assert.Equal(t, "Example", interfaces[0].Name)
 		assert.Len(t, interfaces[0].Methods, 1)
-		assert.Equal(t, interfaces[0].Methods[0].String(), "Add(ctx context.Context, id string) ()")
+		assert.Equal(t, interfaces[0].Methods[0].Signature(), "Add(ctx context.Context, id string) (error)")
 		assert.Equal(t, "Example2", interfaces[1].Name)
 		assert.Len(t, interfaces[1].Methods, 1)
-		assert.Equal(t, interfaces[1].Methods[0].String(), "Add(ctx context.Context, id string) ()")
+		assert.Equal(t, interfaces[1].Methods[0].Signature(), "Add(ctx context.Context, id string) (error)")
 	})
 }

@@ -7,31 +7,83 @@ type Parameter struct {
 	Type string
 }
 
-func (p *Parameter) String() string {
+func (p *Parameter) Signature() string {
+	if p.Name == "" {
+		return p.Type
+	}
+
 	return fmt.Sprintf("%s %s", p.Name, p.Type)
+}
+
+func (p *Parameter) Call() string {
+	if p.Name == "" {
+		return ""
+	}
+
+	return p.Name
 }
 
 type Method struct {
 	Name       string
 	Parameters []Parameter
-	Returns    []string
+	Returns    []Parameter
 }
 
-func (m *Method) String() string {
+func (m *Method) Signature() string {
 	s := m.Name
 	s += "("
 	for i, parameter := range m.Parameters {
 		if i < len(m.Parameters)-1 {
-			s += parameter.String() + ", "
+			s += parameter.Signature() + ", "
 		} else {
-			s += parameter.String()
+			s += parameter.Signature()
 		}
 	}
 	s += ") ("
-	for _, _return := range m.Returns {
-		s += _return + ", "
+	if len(m.Returns) == 1 {
+		s += m.Returns[0].Signature()
+	} else {
+		for i, _return := range m.Returns {
+			if i < len(m.Parameters)-1 {
+				s += _return.Signature() + ", "
+			} else {
+				s += _return.Signature()
+			}
+		}
+	}
+
+	s += ")"
+	return s
+}
+
+func (m *Method) Call() string {
+	s := m.Name
+	s += "("
+	for i, parameter := range m.Parameters {
+		if i < len(m.Parameters)-1 {
+			s += parameter.Call() + ", "
+		} else {
+			s += parameter.Call()
+		}
 	}
 	s += ")"
+	return s
+}
+
+func (m *Method) CallReturn(err string) string {
+	s := "return "
+	if len(m.Returns) == 0 {
+		return s
+	}
+
+	for _, _return := range m.Returns {
+		if _return.Type == "error" {
+			s += err
+		} else {
+			s += _return.Type
+		}
+	}
+
 	return s
 }
 

@@ -15,7 +15,7 @@ func main() {
 
 	reader := internal.NewFileReader(dir)
 
-	file, err := reader.Load("/internal/example/model.go")
+	file, err := reader.Load("/internal/example/interface.go")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -25,12 +25,12 @@ func main() {
 
 	fmt.Println(interfaces)
 
-	decoratorTemplate, err := reader.Load("/internal/template/decorator.txt")
+	decoratorTemplate, err := reader.Load("/internal/template/chaos/decorator.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	methodTemplate, err := reader.Load("/internal/template/method.txt")
+	methodTemplate, err := reader.Load("/internal/template/chaos/method.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
