@@ -38,7 +38,7 @@ func (d *DecoratorGenerator) buildImports(_interface *model.Interface) string {
 }
 
 func (d *DecoratorGenerator) buildMethods(_interface *model.Interface) string {
-	methods := []string{}
+	/*methods := []string{}
 	for _, method := range _interface.Methods {
 		template := strings.ReplaceAll(d.methodTemplate, "{{implementation}}", fmt.Sprintf("%sChaos", _interface.Name))
 		template = strings.ReplaceAll(template, "{{method}}", method)
@@ -49,5 +49,6 @@ func (d *DecoratorGenerator) buildMethods(_interface *model.Interface) string {
 		s += method
 		s += "\n"
 	}
-	return s
+	return s*/
+	return ""
 }

@@ -15,7 +15,7 @@ func main() {
 
 	reader := internal.NewFileReader(dir)
 
-	file, err := reader.Load("/internal/example/interface.go")
+	file, err := reader.Load("/internal/example/model.go")
 	if err != nil {
 		log.Fatal(err)
 	}
