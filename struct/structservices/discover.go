@@ -2,6 +2,7 @@ package structservices
 
 import (
 	"github.com/johnfercher/chaos/struct/regex"
+	"github.com/johnfercher/chaos/struct/structcore/structconsts/content"
 	"github.com/johnfercher/chaos/struct/structcore/structconsts/file"
 	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"github.com/johnfercher/chaos/struct/structcore/structservices"
@@ -14,18 +15,17 @@ const goMod = "/go.mod"
 type Discover struct {
 	loader         structservices.File
 	fileClassifier structservices.FileClassifier
-	entities       map[string]structmodels.File
+	files          []structmodels.File
 }
 
 func NewDiscover(loader structservices.File, fileClassifier structservices.FileClassifier) Discover {
 	return Discover{
 		loader:         loader,
 		fileClassifier: fileClassifier,
-		entities:       make(map[string]structmodels.File),
 	}
 }
 
-func (d *Discover) Project(path string) (map[string]structmodels.File, error) {
+func (d *Discover) Project(path string) ([]structmodels.File, error) {
 	entries, err := os.ReadDir(path)
 	if err != nil {
 		log.Fatal(err)
@@ -49,7 +49,7 @@ func (d *Discover) Project(path string) (map[string]structmodels.File, error) {
 				return nil, err
 			}
 
-			d.entities[path] = structmodels.File{
+			file := structmodels.File{
 				Name:        e.Name(),
 				Path:        filePath,
 				Type:        file.File,
@@ -57,10 +57,18 @@ func (d *Discover) Project(path string) (map[string]structmodels.File, error) {
 				Content:     fileContent,
 				Package:     regex.GetPackageName(fileContent),
 			}
+			d.files = append(d.files, file)
 		}
 	}
 
-	return d.entities, nil
+	var files []structmodels.File
+	for _, file := range d.files {
+		if file.ContentType == content.Go {
+			files = append(files, file)
+		}
+	}
+
+	return files, nil
 }
 
 func (d *Discover) findDir(path string, name string, fileDirType file.Type) error {
@@ -86,7 +94,7 @@ func (d *Discover) findDir(path string, name string, fileDirType file.Type) erro
 			if err != nil {
 				return err
 			}
-			d.entities[filePath] = structmodels.File{
+			file := structmodels.File{
 				Name:        e.Name(),
 				Path:        filePath,
 				Type:        file.File,
@@ -94,6 +102,7 @@ func (d *Discover) findDir(path string, name string, fileDirType file.Type) erro
 				Content:     fileContent,
 				Package:     regex.GetPackageName(fileContent),
 			}
+			d.files = append(d.files, file)
 		}
 
 	}
