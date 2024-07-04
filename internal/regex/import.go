@@ -5,8 +5,10 @@ import (
 	"strings"
 )
 
-var singleLineImports = regexp.MustCompile(`import\s.+`)
-var multiLineImports = regexp.MustCompile(`import\s\(`)
+var (
+	singleLineImports = regexp.MustCompile(`import\s.+`)
+	multiLineImports  = regexp.MustCompile(`import\s\(`)
+)
 
 func GetImports(file string) []string {
 	singleLineFullImports := singleLineImports.FindAllString(file, -1)

@@ -1,18 +1,17 @@
-package internal
+package services
 
 import (
-	"github.com/johnfercher/chaos/internal/model"
+	"github.com/johnfercher/chaos/internal/core/models"
 	"github.com/johnfercher/chaos/internal/regex"
 )
 
-type InterfaceInterpreter struct {
-}
+type InterfaceInterpreter struct{}
 
 func NewInterfaceInterpreter() *InterfaceInterpreter {
 	return &InterfaceInterpreter{}
 }
 
-func (i *InterfaceInterpreter) Interpret(file string) []*model.Interface {
+func (i *InterfaceInterpreter) Interpret(file string) []*models.Interface {
 	pkgName := regex.GetPackageName(file)
 	imports := regex.GetImports(file)
 	interfaces := regex.GetInterfaces(file)

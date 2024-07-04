@@ -1,8 +1,9 @@
-package internal
+package services
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestInterfaceInterpreter_Interpret(t *testing.T) {
@@ -25,5 +26,5 @@ type Example interface {
 	assert.Equal(t, "example", interfaces[0].PackageName)
 	assert.Equal(t, "Example", interfaces[0].Name)
 	assert.Equal(t, []string{"context"}, interfaces[0].Imports)
-	assert.Equal(t, "Add(ctx context.Context, id string) (error)", interfaces[0].Methods[0].Signature())
+	assert.Equal(t, "Add(ctx context.Context, id string) error", interfaces[0].Methods[0].Signature())
 }

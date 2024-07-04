@@ -1,4 +1,6 @@
-package {{package}}
+package chaos
+
+var Decorator = `package {{package}}
 
 {{imports}}
 import "time"
@@ -51,3 +53,4 @@ func (i *{{implementation}}) applyDelay() {
 }
 
 {{methods}}
+`

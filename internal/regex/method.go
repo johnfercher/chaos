@@ -2,15 +2,16 @@ package regex
 
 import (
 	"fmt"
-	"github.com/johnfercher/chaos/internal/model"
 	"regexp"
 	"strings"
+
+	"github.com/johnfercher/chaos/internal/core/models"
 )
 
 var methodName = regexp.MustCompile(`\w+\[?\w+(\s?\w+)?\]?\(`)
 
-func GetMethod(method string) model.Method {
-	m := model.Method{}
+func GetMethod(method string) models.Method {
+	m := models.Method{}
 
 	name := methodName.FindString(method)
 	name = strings.ReplaceAll(name, "(", "")
@@ -27,10 +28,11 @@ func GetMethod(method string) model.Method {
 
 	for _, parameter := range parameters {
 		values := strings.Split(parameter, " ")
-		m.Parameters = append(m.Parameters, model.Parameter{
-			Name: values[0],
-			Type: values[1],
-		})
+		m.Parameters = append(m.Parameters, models.NewParameter(values[0], values[1]))
+	}
+
+	if returnScope == "" {
+		return m
 	}
 
 	returnScope = strings.Replace(returnScope, " ", "", 1)
@@ -51,15 +53,12 @@ func GetMethod(method string) model.Method {
 	return m
 }
 
-func GetParameter(parameterString string) model.Parameter {
+func GetParameter(parameterString string) models.Parameter {
 	parameter := strings.Split(parameterString, " ")
-	p := model.Parameter{}
 
 	if len(parameter) == 1 {
-		p.Type = parameter[0]
-	} else {
-		p.Name = parameter[0]
-		p.Type = parameter[1]
+		return models.NewParameter("", parameter[0])
 	}
-	return p
+
+	return models.NewParameter(parameter[0], parameter[1])
 }

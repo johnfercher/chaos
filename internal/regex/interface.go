@@ -2,21 +2,22 @@ package regex
 
 import (
 	"fmt"
-	"github.com/johnfercher/chaos/internal/model"
 	"regexp"
 	"strings"
+
+	"github.com/johnfercher/chaos/internal/core/models"
 )
 
 var interfaceName = regexp.MustCompile(`type\s.+interface\s+{`)
 
-func GetInterfaces(file string) []*model.Interface {
+func GetInterfaces(file string) []*models.Interface {
 	fullInterfaces := interfaceName.FindAllString(file, -1)
-	var interfaces []*model.Interface
+	var interfaces []*models.Interface
 
 	for _, fullInterface := range fullInterfaces {
 		_interface := strings.ReplaceAll(fullInterface, "type ", "")
 		_interface = strings.ReplaceAll(_interface, " interface {", "")
-		interfaces = append(interfaces, &model.Interface{
+		interfaces = append(interfaces, &models.Interface{
 			Name: _interface,
 		})
 	}
@@ -29,7 +30,7 @@ func GetInterfaces(file string) []*model.Interface {
 	return interfaces
 }
 
-func getInterfaceMethods(file string, name string) []model.Method {
+func getInterfaceMethods(file string, name string) []models.Method {
 	pattern := fmt.Sprintf(`type\s%s\sinterface\s+{`, name)
 	begin := regexp.MustCompile(pattern)
 
@@ -38,7 +39,7 @@ func getInterfaceMethods(file string, name string) []model.Method {
 
 	lines := strings.Split(scope, "\n")
 
-	methods := []model.Method{}
+	methods := []models.Method{}
 	for i := 1; i < len(lines)-2; i++ {
 		line := lines[i]
 		line = strings.ReplaceAll(line, "\t", "")

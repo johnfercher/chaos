@@ -1,8 +1,9 @@
 package regex
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetNamedMethod(t *testing.T) {
@@ -45,16 +46,16 @@ func TestGetNamedMethod(t *testing.T) {
 
 		// Assert
 		assert.Len(t, m.Parameters, 10)
-		assert.Equal(t, "ctx context.Context", m.Parameters[0].Signature())
-		assert.Equal(t, "ctxPointer *context.Context", m.Parameters[1].Signature())
-		assert.Equal(t, "pointer *string", m.Parameters[2].Signature())
-		assert.Equal(t, "pointers []*string", m.Parameters[3].Signature())
-		assert.Equal(t, "ctxs []context.Context", m.Parameters[4].Signature())
-		assert.Equal(t, "id string", m.Parameters[5].Signature())
-		assert.Equal(t, "arr []string", m.Parameters[6].Signature())
-		assert.Equal(t, "ctxsPointers []*context.Context", m.Parameters[7].Signature())
-		assert.Equal(t, "m map[string]string", m.Parameters[8].Signature())
-		assert.Equal(t, "test ...string", m.Parameters[9].Signature())
+		assert.Equal(t, "ctx context.Context", m.Parameters[0].NamedSignature())
+		assert.Equal(t, "ctxPointer *context.Context", m.Parameters[1].NamedSignature())
+		assert.Equal(t, "pointer *string", m.Parameters[2].NamedSignature())
+		assert.Equal(t, "pointers []*string", m.Parameters[3].NamedSignature())
+		assert.Equal(t, "ctxs []context.Context", m.Parameters[4].NamedSignature())
+		assert.Equal(t, "id string", m.Parameters[5].NamedSignature())
+		assert.Equal(t, "arr []string", m.Parameters[6].NamedSignature())
+		assert.Equal(t, "ctxsPointers []*context.Context", m.Parameters[7].NamedSignature())
+		assert.Equal(t, "m map[string]string", m.Parameters[8].NamedSignature())
+		assert.Equal(t, "test ...string", m.Parameters[9].NamedSignature())
 	})
 	t.Run("when has one return, then map correctly", func(t *testing.T) {
 		// Arrange

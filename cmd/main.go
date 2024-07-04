@@ -2,42 +2,60 @@ package main
 
 import (
 	"fmt"
-	"github.com/johnfercher/chaos/internal"
-	"log"
+	"github.com/johnfercher/chaos/internal/services"
+	"github.com/johnfercher/chaos/internal/template/chaos"
+	"github.com/spf13/cobra"
 	"os"
 )
 
+var rootCmd = &cobra.Command{
+	Use:   "deco",
+	Short: "Deco is a decorator generator for go code",
+	Run:   Command,
+}
+
+func Command(cmd *cobra.Command, args []string) {
+	_type, _ := cmd.Flags().GetString("type")
+
+	input, err := cmd.Flags().GetString("input")
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	if input == "" {
+		fmt.Fprintln(os.Stderr, "error: input is empty")
+		os.Exit(1)
+	}
+
+	_interface, err := cmd.Flags().GetString("interface")
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Generate %s decorator for %s in %s\n", _type, _interface, input)
+
+	file := services.NewFile()
+	interpreter := services.NewInterfaceInterpreter()
+	decorator := services.NewDecoratorGenerator(chaos.Decorator, chaos.Method)
+	orchestrator := services.NewOrchestrator(file, interpreter, decorator)
+
+	err = orchestrator.Generate(input, _interface)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
 func main() {
-	dir, err := os.Getwd()
+	rootCmd.PersistentFlags().String("type", "chaos", "The decorator type generation")
+	rootCmd.PersistentFlags().String("input", "", "Input file")
+	rootCmd.PersistentFlags().String("interface", "", "Interface to generate decorator")
+	rootCmd.SetArgs([]string{"--type=chaos", "--input=docs/examples/interfaces.go", "--interface=SingleParameterWithTwoReturns"})
+
+	err := rootCmd.Execute()
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	reader := internal.NewFileReader(dir)
-
-	file, err := reader.Load("/internal/example/interface.go")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	interpreter := internal.NewInterfaceInterpreter()
-	interfaces := interpreter.Interpret(file)
-
-	fmt.Println(interfaces)
-
-	decoratorTemplate, err := reader.Load("/internal/template/chaos/decorator.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	methodTemplate, err := reader.Load("/internal/template/chaos/method.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	decorator := internal.NewDecoratorGenerator(decoratorTemplate, methodTemplate)
-	for _, _interface := range interfaces {
-		s := decorator.Generate(_interface)
-		fmt.Println(s)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }

@@ -4,7 +4,9 @@ import (
 	"regexp"
 )
 
-var openParantesis = regexp.MustCompile(`\(`)
-var closeParantesis = regexp.MustCompile(`\)`)
-var openBrackets = regexp.MustCompile(`\{`)
-var closeBrackets = regexp.MustCompile(`\}`)
+var (
+	openParantesis  = regexp.MustCompile(`\(`)
+	closeParantesis = regexp.MustCompile(`\)`)
+	openBrackets    = regexp.MustCompile(`\{`)
+	closeBrackets   = regexp.MustCompile(`\}`)
+)
