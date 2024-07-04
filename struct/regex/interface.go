@@ -2,22 +2,21 @@ package regex
 
 import (
 	"fmt"
+	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"regexp"
 	"strings"
-
-	"github.com/johnfercher/chaos/internal/core/models"
 )
 
 var interfaceName = regexp.MustCompile(`type\s.+interface\s+{`)
 
-func GetInterfaces(file string) []*models.Interface {
+func GetInterfaces(file string) []*structmodels.Interface {
 	fullInterfaces := interfaceName.FindAllString(file, -1)
-	var interfaces []*models.Interface
+	var interfaces []*structmodels.Interface
 
 	for _, fullInterface := range fullInterfaces {
 		_interface := strings.ReplaceAll(fullInterface, "type ", "")
 		_interface = strings.ReplaceAll(_interface, " interface {", "")
-		interfaces = append(interfaces, &models.Interface{
+		interfaces = append(interfaces, &structmodels.Interface{
 			Name: _interface,
 		})
 	}
@@ -30,7 +29,7 @@ func GetInterfaces(file string) []*models.Interface {
 	return interfaces
 }
 
-func getInterfaceMethods(file string, name string) []models.Method {
+func getInterfaceMethods(file string, name string) []structmodels.Method {
 	pattern := fmt.Sprintf(`type\s%s\sinterface\s+{`, name)
 	begin := regexp.MustCompile(pattern)
 
@@ -39,7 +38,7 @@ func getInterfaceMethods(file string, name string) []models.Method {
 
 	lines := strings.Split(scope, "\n")
 
-	methods := []models.Method{}
+	methods := []structmodels.Method{}
 	for i := 1; i < len(lines)-2; i++ {
 		line := lines[i]
 		line = strings.ReplaceAll(line, "\t", "")

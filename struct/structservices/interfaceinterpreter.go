@@ -1,8 +1,8 @@
-package services
+package structservices
 
 import (
-	"github.com/johnfercher/chaos/internal/core/models"
-	"github.com/johnfercher/chaos/internal/regex"
+	regex2 "github.com/johnfercher/chaos/struct/regex"
+	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"strings"
 )
 
@@ -12,10 +12,10 @@ func NewInterfaceInterpreter() *InterfaceInterpreter {
 	return &InterfaceInterpreter{}
 }
 
-func (int *InterfaceInterpreter) Interpret(file string) []*models.Interface {
-	pkgName := regex.GetPackageName(file)
-	imports := regex.GetImports(file)
-	interfaces := regex.GetInterfaces(file)
+func (int *InterfaceInterpreter) Interpret(file string) []*structmodels.Interface {
+	pkgName := regex2.GetPackageName(file)
+	imports := regex2.GetImports(file)
+	interfaces := regex2.GetInterfaces(file)
 
 	for i := 0; i < len(interfaces); i++ {
 		interfaces[i].PackageName = pkgName
@@ -25,8 +25,8 @@ func (int *InterfaceInterpreter) Interpret(file string) []*models.Interface {
 	return interfaces
 }
 
-func (int *InterfaceInterpreter) getUsedImports(allImports []models.Import, methods []models.Method) []models.Import {
-	filtered := make(map[string]models.Import)
+func (int *InterfaceInterpreter) getUsedImports(allImports []structmodels.Import, methods []structmodels.Method) []structmodels.Import {
+	filtered := make(map[string]structmodels.Import)
 
 	for _, _import := range allImports {
 
@@ -45,7 +45,7 @@ func (int *InterfaceInterpreter) getUsedImports(allImports []models.Import, meth
 
 	}
 
-	var list []models.Import
+	var list []structmodels.Import
 	for _, f := range filtered {
 		list = append(list, f)
 	}

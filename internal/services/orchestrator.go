@@ -2,31 +2,32 @@ package services
 
 import (
 	"errors"
+	"github.com/johnfercher/chaos/struct/structcore/structmodels"
+	"github.com/johnfercher/chaos/struct/structcore/structservices"
 	"regexp"
 
-	"github.com/johnfercher/chaos/internal/core/models"
 	"github.com/johnfercher/chaos/internal/core/services"
 )
 
 var ErrInterfaceNotFound = errors.New("interface_not_found_error")
 
-type Orchestrator struct {
-	file                 services.File
-	interfaceInterpreter services.InterfaceInterpreter
+type GenerationOrchestrator struct {
+	file                 structservices.File
+	interfaceInterpreter structservices.InterfaceInterpreter
 	decoratorStrategy    services.DecoratorStrategy
 }
 
-func NewOrchestrator(file services.File, interfaceInterpreter services.InterfaceInterpreter,
+func NewGenerationOrchestrator(file structservices.File, interfaceInterpreter structservices.InterfaceInterpreter,
 	decoratorStrategy services.DecoratorStrategy,
-) *Orchestrator {
-	return &Orchestrator{
+) *GenerationOrchestrator {
+	return &GenerationOrchestrator{
 		file:                 file,
 		interfaceInterpreter: interfaceInterpreter,
 		decoratorStrategy:    decoratorStrategy,
 	}
 }
 
-func (o *Orchestrator) Generate(filePath string, name string) error {
+func (o *GenerationOrchestrator) Generate(filePath string, name string) error {
 	file, err := o.file.Read(filePath)
 	if err != nil {
 		return err
@@ -43,7 +44,7 @@ func (o *Orchestrator) Generate(filePath string, name string) error {
 	return o.generateOne(outputFile, file, name)
 }
 
-func (o *Orchestrator) generateAll(outputFile string, file string) error {
+func (o *GenerationOrchestrator) generateAll(outputFile string, file string) error {
 	interfaces := o.interfaceInterpreter.Interpret(file)
 
 	for _, _interface := range interfaces {
@@ -57,7 +58,7 @@ func (o *Orchestrator) generateAll(outputFile string, file string) error {
 	return nil
 }
 
-func (o *Orchestrator) generateOne(outputFile string, file string, name string) error {
+func (o *GenerationOrchestrator) generateOne(outputFile string, file string, name string) error {
 	_interface, err := o.getInterface(file, name)
 	if err != nil {
 		return err
@@ -67,7 +68,7 @@ func (o *Orchestrator) generateOne(outputFile string, file string, name string) 
 	return o.file.Write(outputFile, decorator)
 }
 
-func (o *Orchestrator) getInterface(file string, name string) (*models.Interface, error) {
+func (o *GenerationOrchestrator) getInterface(file string, name string) (*structmodels.Interface, error) {
 	interfaces := o.interfaceInterpreter.Interpret(file)
 	for _, _interface := range interfaces {
 		if _interface.Name == name {

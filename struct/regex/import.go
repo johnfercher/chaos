@@ -1,7 +1,7 @@
 package regex
 
 import (
-	"github.com/johnfercher/chaos/internal/core/models"
+	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"regexp"
 	"strings"
 )
@@ -11,9 +11,9 @@ var (
 	multiLineImports  = regexp.MustCompile(`import\s\(`)
 )
 
-func GetImports(file string) []models.Import {
+func GetImports(file string) []structmodels.Import {
 	singleLineFullImports := singleLineImports.FindAllString(file, -1)
-	var imports []models.Import
+	var imports []structmodels.Import
 
 	for _, singleLineFullImport := range singleLineFullImports {
 		if singleLineFullImport == "import (" {
@@ -21,7 +21,7 @@ func GetImports(file string) []models.Import {
 		}
 		_import := strings.ReplaceAll(singleLineFullImport, `import "`, "")
 		_import = strings.ReplaceAll(_import, `"`, "")
-		imports = append(imports, models.NewImport(_import))
+		imports = append(imports, structmodels.NewImport(_import))
 	}
 
 	multipleImports := getMultipleImports(file)
@@ -30,16 +30,16 @@ func GetImports(file string) []models.Import {
 	return imports
 }
 
-func getMultipleImports(file string) []models.Import {
+func getMultipleImports(file string) []structmodels.Import {
 	scope := GetMultiLineScope(file, multiLineImports, closeParantesis)
 	lines := strings.Split(scope, "\n")
 
-	_imports := []models.Import{}
+	_imports := []structmodels.Import{}
 	for i := 1; i < len(lines)-2; i++ {
 		line := lines[i]
 		line = strings.ReplaceAll(line, "\t", "")
 		line = strings.ReplaceAll(line, `"`, "")
-		_imports = append(_imports, models.NewImport(line))
+		_imports = append(_imports, structmodels.NewImport(line))
 	}
 
 	return _imports

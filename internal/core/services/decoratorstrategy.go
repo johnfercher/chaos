@@ -1,9 +1,9 @@
 package services
 
 import (
-	"github.com/johnfercher/chaos/internal/core/models"
+	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 )
 
 type DecoratorStrategy interface {
-	Generate(*models.Interface) string
+	Generate(*structmodels.Interface) string
 }

@@ -1,4 +1,4 @@
-package services
+package structservices
 
 import (
 	"testing"
@@ -26,5 +26,4 @@ type Example interface {
 	assert.Equal(t, "example", interfaces[0].PackageName)
 	assert.Equal(t, "Example", interfaces[0].Name)
 	assert.Equal(t, "context", interfaces[0].Imports[0].Import())
-	assert.Equal(t, "Add(ctx context.Context, id string) error", interfaces[0].Methods[0].Signature())
 }

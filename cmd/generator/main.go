@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/johnfercher/chaos/internal/services"
 	"github.com/johnfercher/chaos/internal/template/chaos"
+	"github.com/johnfercher/chaos/struct/structservices"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -33,12 +34,12 @@ func Command(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Generate %s decorator for %s in %s\n", _type, _interface, input)
+	fmt.Printf("Generate %s decoratorGenerator for %s in %s\n", _type, _interface, input)
 
-	file := services.NewFile()
-	interpreter := services.NewInterfaceInterpreter()
-	decorator := services.NewDecoratorGenerator("Chaos", chaos.Decorator, chaos.Method)
-	orchestrator := services.NewOrchestrator(file, interpreter, decorator)
+	file := structservices.NewFile()
+	interpreter := structservices.NewInterfaceInterpreter()
+	decoratorGenerator := services.NewDecoratorGenerator("Chaos", chaos.Decorator, chaos.Method)
+	orchestrator := services.NewGenerationOrchestrator(file, interpreter, decoratorGenerator)
 
 	err = orchestrator.Generate(input, _interface)
 	if err != nil {

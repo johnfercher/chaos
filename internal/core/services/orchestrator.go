@@ -1,5 +1,5 @@
 package services
 
-type Orchestrator interface {
+type GenerationOrchestrator interface {
 	Generate(filePath string, name string) error
 }

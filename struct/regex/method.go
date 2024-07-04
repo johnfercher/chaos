@@ -2,16 +2,15 @@ package regex
 
 import (
 	"fmt"
+	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"regexp"
 	"strings"
-
-	"github.com/johnfercher/chaos/internal/core/models"
 )
 
 var methodName = regexp.MustCompile(`\w+\[?\w+(\s?\w+)?\]?\(`)
 
-func GetMethod(method string) models.Method {
-	m := models.Method{}
+func GetMethod(method string) structmodels.Method {
+	m := structmodels.Method{}
 
 	name := methodName.FindString(method)
 	name = strings.ReplaceAll(name, "(", "")
@@ -28,7 +27,7 @@ func GetMethod(method string) models.Method {
 
 	for _, parameter := range parameters {
 		values := strings.Split(parameter, " ")
-		m.Parameters = append(m.Parameters, models.NewParameter(values[0], values[1]))
+		m.Parameters = append(m.Parameters, structmodels.NewParameter(values[0], values[1]))
 	}
 
 	if returnScope == "" {
@@ -53,12 +52,12 @@ func GetMethod(method string) models.Method {
 	return m
 }
 
-func GetParameter(parameterString string) models.Parameter {
+func GetParameter(parameterString string) structmodels.Parameter {
 	parameter := strings.Split(parameterString, " ")
 
 	if len(parameter) == 1 {
-		return models.NewParameter("", parameter[0])
+		return structmodels.NewParameter("", parameter[0])
 	}
 
-	return models.NewParameter(parameter[0], parameter[1])
+	return structmodels.NewParameter(parameter[0], parameter[1])
 }

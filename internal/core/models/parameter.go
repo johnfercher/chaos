@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"strings"
 )
 
@@ -68,6 +69,14 @@ func NewParameter(name string, _type string) Parameter {
 		Name:      name,
 		Type:      _type,
 		ZeroValue: getZeroValue(_type),
+	}
+}
+
+func NewFromParameter(parameter structmodels.Parameter) Parameter {
+	return Parameter{
+		Name:      parameter.Name,
+		Type:      parameter.Type,
+		ZeroValue: getZeroValue(parameter.Type),
 	}
 }
 

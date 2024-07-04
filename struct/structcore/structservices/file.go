@@ -1,4 +1,4 @@
-package services
+package structservices
 
 type File interface {
 	Read(pathName string) (string, error)

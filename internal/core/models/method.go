@@ -1,9 +1,27 @@
 package models
 
+import "github.com/johnfercher/chaos/struct/structcore/structmodels"
+
 type Method struct {
 	Name       string
 	Parameters []Parameter
 	Returns    []Parameter
+}
+
+func NewMethod(m structmodels.Method) Method {
+	return Method{
+		Name:       m.Name,
+		Parameters: mapParameters(m.Parameters),
+		Returns:    mapParameters(m.Returns),
+	}
+}
+
+func mapParameters(parameters []structmodels.Parameter) []Parameter {
+	var params []Parameter
+	for _, p := range parameters {
+		params = append(params, NewFromParameter(p))
+	}
+	return params
 }
 
 func (m *Method) Signature() string {

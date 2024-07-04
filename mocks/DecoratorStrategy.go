@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	models "github.com/johnfercher/chaos/internal/core/models"
+	models "github.com/johnfercher/chaos/struct/structcore/structmodels"
 	mock "github.com/stretchr/testify/mock"
 )
 

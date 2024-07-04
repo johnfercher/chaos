@@ -2,9 +2,9 @@ package services
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/johnfercher/chaos/internal/core/models"
+	"github.com/johnfercher/chaos/struct/structcore/structmodels"
+	"strings"
 )
 
 type DecoratorGenerator struct {
@@ -21,7 +21,7 @@ func NewDecoratorGenerator(suffix string, decoratorTemplate string, methodTempla
 	}
 }
 
-func (d *DecoratorGenerator) Generate(_interface *models.Interface) string {
+func (d *DecoratorGenerator) Generate(_interface *structmodels.Interface) string {
 	template := strings.ReplaceAll(d.decoratorTemplate, "{{package}}", _interface.PackageName)
 	template = strings.ReplaceAll(template, "{{imports}}", d.buildImports(_interface))
 	template = strings.ReplaceAll(template, "{{implementation}}", fmt.Sprintf("%s%s", _interface.Name, d.suffix))
@@ -31,7 +31,7 @@ func (d *DecoratorGenerator) Generate(_interface *models.Interface) string {
 	return template
 }
 
-func (d *DecoratorGenerator) buildImports(_interface *models.Interface) string {
+func (d *DecoratorGenerator) buildImports(_interface *structmodels.Interface) string {
 	if len(_interface.Imports) == 0 {
 		return ""
 	}
@@ -44,13 +44,14 @@ func (d *DecoratorGenerator) buildImports(_interface *models.Interface) string {
 	return s
 }
 
-func (d *DecoratorGenerator) buildMethods(_interface *models.Interface) string {
+func (d *DecoratorGenerator) buildMethods(_interface *structmodels.Interface) string {
 	methods := []string{}
 	for _, method := range _interface.Methods {
+		m := models.NewMethod(method)
 		template := strings.ReplaceAll(d.methodTemplate, "{{implementation}}", fmt.Sprintf("%s%s", _interface.Name, d.suffix))
-		template = strings.ReplaceAll(template, "{{method_signature}}", method.Signature())
-		template = strings.ReplaceAll(template, "{{method_call}}", method.Call())
-		template = strings.ReplaceAll(template, "{{method_return}}", method.CallReturn("err"))
+		template = strings.ReplaceAll(template, "{{method_signature}}", m.Signature())
+		template = strings.ReplaceAll(template, "{{method_call}}", m.Call())
+		template = strings.ReplaceAll(template, "{{method_return}}", m.CallReturn("err"))
 		methods = append(methods, template)
 	}
 	s := ""

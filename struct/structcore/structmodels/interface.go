@@ -1,6 +1,8 @@
-package models
+package structmodels
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Interface struct {
 	PackageName string
