@@ -9,6 +9,7 @@ import (
 type File struct {
 	Name        string
 	Path        string
+	FullPath    string
 	Type        file.Type
 	ContentType content.Type
 	Package     string

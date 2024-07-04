@@ -51,7 +51,8 @@ func (d *Discover) Project(path string) ([]structmodels.File, error) {
 
 			file := structmodels.File{
 				Name:        e.Name(),
-				Path:        filePath,
+				Path:        path,
+				FullPath:    filePath,
 				Type:        file.File,
 				ContentType: d.fileClassifier.Classify(fileContent),
 				Content:     fileContent,
@@ -96,7 +97,8 @@ func (d *Discover) findDir(path string, name string, fileDirType file.Type) erro
 			}
 			file := structmodels.File{
 				Name:        e.Name(),
-				Path:        filePath,
+				Path:        path,
+				FullPath:    filePath,
 				Type:        file.File,
 				ContentType: d.fileClassifier.Classify(fileContent),
 				Content:     fileContent,

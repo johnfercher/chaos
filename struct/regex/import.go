@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	singleLineImports = regexp.MustCompile(`import\s.+`)
-	multiLineImports  = regexp.MustCompile(`import\s\(`)
+	singleLineImports = NewRegex(regexp.MustCompile(`import\s.+`))
+	multiLineImports  = NewRegex(regexp.MustCompile(`import\s\(`))
 )
 
 func GetImports(file string) []structmodels.Import {
@@ -21,7 +21,7 @@ func GetImports(file string) []structmodels.Import {
 		}
 		_import := strings.ReplaceAll(singleLineFullImport, `import "`, "")
 		_import = strings.ReplaceAll(_import, `"`, "")
-		imports = append(imports, structmodels.NewImport(_import))
+		imports = append(imports, getImport(_import))
 	}
 
 	multipleImports := getMultipleImports(file)
@@ -37,10 +37,19 @@ func getMultipleImports(file string) []structmodels.Import {
 	_imports := []structmodels.Import{}
 	for i := 1; i < len(lines)-2; i++ {
 		line := lines[i]
-		line = strings.ReplaceAll(line, "\t", "")
-		line = strings.ReplaceAll(line, `"`, "")
-		_imports = append(_imports, structmodels.NewImport(line))
+		_imports = append(_imports, getImport(line))
 	}
 
 	return _imports
+}
+
+func getImport(line string) structmodels.Import {
+	line = strings.ReplaceAll(line, "\t", "")
+	line = strings.ReplaceAll(line, `"`, "")
+	values := strings.Split(line, " ")
+
+	if len(values) == 1 {
+		return structmodels.NewImport(values[0])
+	}
+	return structmodels.NewImport(values[1], values[0])
 }

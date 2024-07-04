@@ -38,7 +38,7 @@ func (d *DecoratorGenerator) buildImports(_interface *structmodels.Interface) st
 
 	s := `import (`
 	for _, _import := range _interface.Imports {
-		s += "\n\t" + fmt.Sprintf(`"%s"`, _import.Import())
+		s += "\n\t" + _import.Import()
 	}
 	s += "\n)"
 	return s

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-var methodName = regexp.MustCompile(`\w+\[?\w+(\s?\w+)?\]?\(`)
+var methodName = NewRegex(regexp.MustCompile(`\w+\[?\w+(\s?\w+)?\]?\(`))
 
 func GetMethod(method string) structmodels.Method {
 	m := structmodels.Method{}

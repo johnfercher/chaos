@@ -1,11 +1,10 @@
 package regex
 
 import (
-	"regexp"
 	"strings"
 )
 
-func GetMultiLineScope(file string, begin *regexp.Regexp, end *regexp.Regexp) string {
+func GetMultiLineScope(file string, begin *Regex, end *Regex) string {
 	lines := strings.Split(file, "\n")
 	beginID := -1
 	for id, line := range lines {

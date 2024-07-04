@@ -53,7 +53,7 @@ func main() {
 	rootCmd.PersistentFlags().String("input", "", "Input file")
 	rootCmd.PersistentFlags().String("interface", "", "Interface to generate decorator")
 	//rootCmd.SetArgs([]string{"--type=chaos", "--input=docs/examples/interfaces.go", "--interface=SingleParameterWithTwoReturns"})
-	rootCmd.SetArgs([]string{"--type=chaos", "--input=docs/examples/interfaces.go"})
+	rootCmd.SetArgs([]string{"--type=chaos", "--input=docs/examples/medium/productapi/internal/api/httphandler.go"})
 
 	err := rootCmd.Execute()
 	if err != nil {

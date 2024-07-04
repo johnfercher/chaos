@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-var interfaceName = regexp.MustCompile(`type\s.+interface\s+{`)
+var interfaceName = NewRegex(regexp.MustCompile(`type\s.+interface\s+{`))
 
 func GetInterfaces(file string) []*structmodels.Interface {
 	fullInterfaces := interfaceName.FindAllString(file, -1)
@@ -31,10 +31,9 @@ func GetInterfaces(file string) []*structmodels.Interface {
 
 func getInterfaceMethods(file string, name string) []structmodels.Method {
 	pattern := fmt.Sprintf(`type\s%s\sinterface\s+{`, name)
-	begin := regexp.MustCompile(pattern)
+	begin := NewRegex(regexp.MustCompile(pattern))
 
 	scope := GetMultiLineScope(file, begin, closeBrackets)
-	fmt.Println(scope)
 
 	lines := strings.Split(scope, "\n")
 

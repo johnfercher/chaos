@@ -13,6 +13,7 @@ var nilZeroCases = []string{
 	"[]*",
 	"map[",
 	"context.Context",
+	"interface{}",
 }
 
 var zeroZeroCases = []string{

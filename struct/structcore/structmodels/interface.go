@@ -6,19 +6,20 @@ import (
 
 type Interface struct {
 	PackageName string
-	Imports     []Import
+	Imports     Imports
 	Name        string
 	Methods     []Method
 }
 
 func (i *Interface) String() string {
 	s := fmt.Sprintf("package %s\n", i.PackageName)
-	s += fmt.Sprintf("interface %s\n", i.Name)
-	for _, _import := range i.Imports {
-		s += fmt.Sprintf("import %s\n", _import.Full)
-	}
+
+	s += i.Imports.String()
+
+	s += fmt.Sprintf("type %s interface {\n", i.Name)
 	for _, method := range i.Methods {
-		s += fmt.Sprintf("method %s\n", method)
+		s += "\t" + method.String() + "\n"
 	}
+	s += "}"
 	return s
 }

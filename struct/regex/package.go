@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var packageRegex = regexp.MustCompile(`package\s\w+`)
+var packageRegex = NewRegex(regexp.MustCompile(`package\s\w+`))
 
 func GetPackageName(file string) string {
 	s := packageRegex.FindString(file)

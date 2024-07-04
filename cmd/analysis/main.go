@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"github.com/johnfercher/chaos/struct/structservices"
 	"log"
@@ -22,5 +23,9 @@ func main() {
 		f.Print("")
 		_interface := interfaceInterpreter.Interpret(f.Content)
 		interfaces = append(interfaces, _interface...)
+	}
+
+	for _, _interface := range interfaces {
+		fmt.Println(_interface.String())
 	}
 }
