@@ -25,6 +25,6 @@ type Example interface {
 	assert.Len(t, interfaces, 1)
 	assert.Equal(t, "example", interfaces[0].PackageName)
 	assert.Equal(t, "Example", interfaces[0].Name)
-	assert.Equal(t, []string{"context"}, interfaces[0].Imports)
+	assert.Equal(t, "context", interfaces[0].Imports[0].Import())
 	assert.Equal(t, "Add(ctx context.Context, id string) error", interfaces[0].Methods[0].Signature())
 }

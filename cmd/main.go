@@ -37,7 +37,7 @@ func Command(cmd *cobra.Command, args []string) {
 
 	file := services.NewFile()
 	interpreter := services.NewInterfaceInterpreter()
-	decorator := services.NewDecoratorGenerator(chaos.Decorator, chaos.Method)
+	decorator := services.NewDecoratorGenerator("Chaos", chaos.Decorator, chaos.Method)
 	orchestrator := services.NewOrchestrator(file, interpreter, decorator)
 
 	err = orchestrator.Generate(input, _interface)
@@ -51,7 +51,8 @@ func main() {
 	rootCmd.PersistentFlags().String("type", "chaos", "The decorator type generation")
 	rootCmd.PersistentFlags().String("input", "", "Input file")
 	rootCmd.PersistentFlags().String("interface", "", "Interface to generate decorator")
-	rootCmd.SetArgs([]string{"--type=chaos", "--input=docs/examples/interfaces.go", "--interface=SingleParameterWithTwoReturns"})
+	//rootCmd.SetArgs([]string{"--type=chaos", "--input=docs/examples/interfaces.go", "--interface=SingleParameterWithTwoReturns"})
+	rootCmd.SetArgs([]string{"--type=chaos", "--input=docs/examples/interfaces.go"})
 
 	err := rootCmd.Execute()
 	if err != nil {
