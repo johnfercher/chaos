@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/johnfercher/chaos/struct/structcore/structconsts/content"
 	"github.com/johnfercher/chaos/struct/structservices"
 	"log"
 )
@@ -14,7 +15,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for _, pkg := range packages {
-		pkg.Print("")
+	for key, p := range packages {
+		if p.ContentType != content.Go {
+			delete(packages, key)
+		}
+	}
+
+	for _, p := range packages {
+		p.Print("")
 	}
 }

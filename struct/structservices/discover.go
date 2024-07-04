@@ -1,6 +1,7 @@
 package structservices
 
 import (
+	"github.com/johnfercher/chaos/struct/regex"
 	"github.com/johnfercher/chaos/struct/structcore/structconsts/file"
 	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"github.com/johnfercher/chaos/struct/structcore/structservices"
@@ -13,18 +14,18 @@ const goMod = "/go.mod"
 type Discover struct {
 	loader         structservices.File
 	fileClassifier structservices.FileClassifier
-	entities       map[string]structmodels.Package
+	entities       map[string]structmodels.File
 }
 
 func NewDiscover(loader structservices.File, fileClassifier structservices.FileClassifier) Discover {
 	return Discover{
 		loader:         loader,
 		fileClassifier: fileClassifier,
-		entities:       make(map[string]structmodels.Package),
+		entities:       make(map[string]structmodels.File),
 	}
 }
 
-func (d *Discover) Project(path string) (map[string]structmodels.Package, error) {
+func (d *Discover) Project(path string) (map[string]structmodels.File, error) {
 	entries, err := os.ReadDir(path)
 	if err != nil {
 		log.Fatal(err)
@@ -48,11 +49,13 @@ func (d *Discover) Project(path string) (map[string]structmodels.Package, error)
 				return nil, err
 			}
 
-			d.entities[path] = structmodels.Package{
+			d.entities[path] = structmodels.File{
 				Name:        e.Name(),
 				Path:        filePath,
 				Type:        file.File,
-				ContentType: d.fileClassifier.Classify(string(fileContent)),
+				ContentType: d.fileClassifier.Classify(fileContent),
+				Content:     fileContent,
+				Package:     regex.GetPackageName(fileContent),
 			}
 		}
 	}
@@ -83,11 +86,13 @@ func (d *Discover) findDir(path string, name string, fileDirType file.Type) erro
 			if err != nil {
 				return err
 			}
-			d.entities[filePath] = structmodels.Package{
+			d.entities[filePath] = structmodels.File{
 				Name:        e.Name(),
 				Path:        filePath,
 				Type:        file.File,
-				ContentType: d.fileClassifier.Classify(string(fileContent)),
+				ContentType: d.fileClassifier.Classify(fileContent),
+				Content:     fileContent,
+				Package:     regex.GetPackageName(fileContent),
 			}
 		}
 
