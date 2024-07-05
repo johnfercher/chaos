@@ -12,10 +12,10 @@ func NewInterfaceInterpreter() *InterfaceInterpreter {
 	return &InterfaceInterpreter{}
 }
 
-func (int *InterfaceInterpreter) Interpret(file string) []*structmodels.Interface {
-	pkgName := regex.GetPackageName(file)
-	imports := regex.GetImports(file)
-	interfaces := regex.GetInterfaces(file)
+func (int *InterfaceInterpreter) Interpret(content string) []*structmodels.Interface {
+	pkgName := regex.GetPackageName(content)
+	imports := regex.GetImports(content)
+	interfaces := regex.GetInterfaces(content)
 
 	for i := 0; i < len(interfaces); i++ {
 		interfaces[i].PackageName = pkgName

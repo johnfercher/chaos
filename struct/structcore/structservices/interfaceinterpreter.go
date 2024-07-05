@@ -5,5 +5,5 @@ import (
 )
 
 type InterfaceInterpreter interface {
-	Interpret(file string) []*structmodels.Interface
+	Interpret(content string) []*structmodels.Interface
 }

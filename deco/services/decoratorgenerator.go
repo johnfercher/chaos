@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"github.com/johnfercher/chaos/internal/core/models"
+	"github.com/johnfercher/chaos/deco/core/models"
 	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"strings"
 )

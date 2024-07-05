@@ -13,15 +13,20 @@ import (
 const goMod = "/go.mod"
 
 type Discover struct {
-	loader         structservices.File
-	fileClassifier structservices.FileClassifier
-	files          []structmodels.File
+	loader               structservices.File
+	fileClassifier       structservices.FileClassifier
+	files                []structmodels.File
+	interfaceInterpreter structservices.InterfaceInterpreter
+	functionInterpreter  structservices.FunctionInterpreter
 }
 
-func NewDiscover(loader structservices.File, fileClassifier structservices.FileClassifier) Discover {
+func NewDiscover(loader structservices.File, fileClassifier structservices.FileClassifier,
+	interfaceInterpreter structservices.InterfaceInterpreter, functionInterpreter structservices.FunctionInterpreter) Discover {
 	return Discover{
-		loader:         loader,
-		fileClassifier: fileClassifier,
+		loader:               loader,
+		fileClassifier:       fileClassifier,
+		interfaceInterpreter: interfaceInterpreter,
+		functionInterpreter:  functionInterpreter,
 	}
 }
 
@@ -52,11 +57,13 @@ func (d *Discover) Project(path string) ([]structmodels.File, error) {
 			file := structmodels.File{
 				Name:        e.Name(),
 				Path:        path,
-				FullPath:    filePath,
 				Type:        file.File,
 				ContentType: d.fileClassifier.Classify(fileContent),
 				Content:     fileContent,
+				Imports:     regex.GetImports(fileContent),
 				Package:     regex.GetPackageName(fileContent),
+				Interfaces:  d.interfaceInterpreter.Interpret(fileContent),
+				Functions:   d.functionInterpreter.Interpret(fileContent),
 			}
 			d.files = append(d.files, file)
 		}
@@ -98,11 +105,13 @@ func (d *Discover) findDir(path string, name string, fileDirType file.Type) erro
 			file := structmodels.File{
 				Name:        e.Name(),
 				Path:        path,
-				FullPath:    filePath,
 				Type:        file.File,
 				ContentType: d.fileClassifier.Classify(fileContent),
+				Imports:     regex.GetImports(fileContent),
 				Content:     fileContent,
 				Package:     regex.GetPackageName(fileContent),
+				Interfaces:  d.interfaceInterpreter.Interpret(fileContent),
+				Functions:   d.functionInterpreter.Interpret(fileContent),
 			}
 			d.files = append(d.files, file)
 		}

@@ -2,11 +2,10 @@ package services
 
 import (
 	"errors"
+	"github.com/johnfercher/chaos/deco/core/services"
 	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"github.com/johnfercher/chaos/struct/structcore/structservices"
 	"regexp"
-
-	"github.com/johnfercher/chaos/internal/core/services"
 )
 
 var ErrInterfaceNotFound = errors.New("interface_not_found_error")

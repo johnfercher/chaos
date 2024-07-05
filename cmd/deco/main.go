@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/johnfercher/chaos/internal/services"
-	"github.com/johnfercher/chaos/internal/template/chaos"
+	services2 "github.com/johnfercher/chaos/deco/services"
+	chaos2 "github.com/johnfercher/chaos/deco/template/chaos"
 	"github.com/johnfercher/chaos/struct/structservices"
 	"github.com/spf13/cobra"
 	"os"
@@ -11,7 +11,7 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "deco",
-	Short: "Deco is a decorator generator for go code",
+	Short: "Deco is a decorator deco for go code",
 	Run:   Command,
 }
 
@@ -38,8 +38,8 @@ func Command(cmd *cobra.Command, args []string) {
 
 	file := structservices.NewFile()
 	interpreter := structservices.NewInterfaceInterpreter()
-	decoratorGenerator := services.NewDecoratorGenerator("Chaos", chaos.Decorator, chaos.Method)
-	orchestrator := services.NewGenerationOrchestrator(file, interpreter, decoratorGenerator)
+	decoratorGenerator := services2.NewDecoratorGenerator("Chaos", chaos2.Decorator, chaos2.Method)
+	orchestrator := services2.NewGenerationOrchestrator(file, interpreter, decoratorGenerator)
 
 	err = orchestrator.Generate(input, _interface)
 	if err != nil {
