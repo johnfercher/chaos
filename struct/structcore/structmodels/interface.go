@@ -12,7 +12,9 @@ type Interface struct {
 }
 
 func (i *Interface) String() string {
-	s := fmt.Sprintf("package %s\n", i.PackageName)
+	s := "```" + "\n"
+	s += fmt.Sprintf("package %s\n", i.PackageName)
+	s += "\n"
 
 	s += i.Imports.String()
 
@@ -20,6 +22,7 @@ func (i *Interface) String() string {
 	for _, method := range i.Methods {
 		s += "\t" + method.String() + "\n"
 	}
-	s += "}"
+	s += "}" + "\n"
+	s += "```"
 	return s
 }

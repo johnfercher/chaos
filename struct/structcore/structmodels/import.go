@@ -42,13 +42,13 @@ func (i Imports) String() string {
 		return ""
 	}
 	if len(i) == 1 {
-		return i[0].String()
+		return i[0].String() + "\n\n"
 	}
 	s := "import ("
 	for _, _import := range i {
 		s += "\n\t" + fmt.Sprintf(`"%s"`, _import.Full)
 	}
-	s += "\n)\n"
+	s += "\n)\n\n"
 	return s
 }
 
