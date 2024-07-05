@@ -24,15 +24,8 @@ func GetMethod(method string) structmodels.Method {
 	parametersScope = strings.ReplaceAll(parametersScope, ")", "")
 	parametersScope = strings.ReplaceAll(parametersScope, ", ", ",")
 
-	if parametersScope != "" {
-		parameters := strings.Split(parametersScope, ",")
-
-		for _, parameter := range parameters {
-			values := strings.Split(parameter, " ")
-			m.Parameters = append(m.Parameters, structmodels.NewParameter(values[0], values[1]))
-		}
-	}
-
+	parameters := GetParameters(parametersScope)
+	m.Parameters = append(m.Parameters, parameters...)
 	if returnScope == "" {
 		return m
 	}

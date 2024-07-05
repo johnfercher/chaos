@@ -2,12 +2,28 @@ package structmodels
 
 type Method struct {
 	Name       string
+	Source     string
+	Package    string
+	Path       string
 	Parameters []Parameter
 	Returns    []Parameter
 }
 
 func (m *Method) String() string {
-	s := m.Name + "("
+	s := ""
+	if m.Source != "" {
+		s += m.Source + " "
+	}
+
+	if m.Package != "" {
+		s += m.Package + " "
+	}
+
+	if m.Path != "" {
+		s += m.Path + " "
+	}
+
+	s += m.Name + "("
 	for index, parameter := range m.Parameters {
 		if index < len(m.Parameters)-1 {
 			s += parameter.String() + ", "

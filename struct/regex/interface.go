@@ -42,6 +42,7 @@ func getInterfaceMethods(file string, name string) []structmodels.Method {
 		line := lines[i]
 		line = strings.ReplaceAll(line, "\t", "")
 		m := GetMethod(line)
+		m.Source = name
 		methods = append(methods, m)
 	}
 

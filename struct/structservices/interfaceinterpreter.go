@@ -1,7 +1,7 @@
 package structservices
 
 import (
-	regex2 "github.com/johnfercher/chaos/struct/regex"
+	"github.com/johnfercher/chaos/struct/regex"
 	"github.com/johnfercher/chaos/struct/structcore/structmodels"
 	"strings"
 )
@@ -13,9 +13,9 @@ func NewInterfaceInterpreter() *InterfaceInterpreter {
 }
 
 func (int *InterfaceInterpreter) Interpret(file string) []*structmodels.Interface {
-	pkgName := regex2.GetPackageName(file)
-	imports := regex2.GetImports(file)
-	interfaces := regex2.GetInterfaces(file)
+	pkgName := regex.GetPackageName(file)
+	imports := regex.GetImports(file)
+	interfaces := regex.GetInterfaces(file)
 
 	for i := 0; i < len(interfaces); i++ {
 		interfaces[i].PackageName = pkgName

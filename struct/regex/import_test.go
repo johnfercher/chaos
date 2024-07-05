@@ -20,7 +20,8 @@ type Example interface {
 		imports := GetImports(content)
 
 		// Assert
-		assert.Equal(t, "context", imports[0].Import())
+		assert.Equal(t, "context", imports[0].Full)
+		assert.Equal(t, "context", imports[0].Alias)
 	})
 	t.Run("when has two single imports, then return correctly", func(t *testing.T) {
 		// Arrange
@@ -36,8 +37,10 @@ type Example interface {
 		imports := GetImports(content)
 
 		// Assert
-		assert.Equal(t, "context", imports[0].Import())
-		assert.Equal(t, "github.com", imports[1].Import())
+		assert.Equal(t, "context", imports[0].Full)
+		assert.Equal(t, "context", imports[0].Alias)
+		assert.Equal(t, "github.com", imports[1].Full)
+		assert.Equal(t, "github.com", imports[1].Alias)
 	})
 	t.Run("when has one multiple imports, then return correctly", func(t *testing.T) {
 		// Arrange
@@ -54,7 +57,8 @@ type Example interface {
 		imports := GetImports(content)
 
 		// Assert
-		assert.Equal(t, "context", imports[0].Import())
+		assert.Equal(t, "context", imports[0].Full)
+		assert.Equal(t, "context", imports[0].Alias)
 	})
 	t.Run("when has one multiple imports, then return correctly", func(t *testing.T) {
 		// Arrange
@@ -72,7 +76,9 @@ type Example interface {
 		imports := GetImports(content)
 
 		// Assert
-		assert.Equal(t, "context", imports[0].Import())
-		assert.Equal(t, "github.com/blabla", imports[1].Import())
+		assert.Equal(t, "context", imports[0].Full)
+		assert.Equal(t, "context", imports[0].Alias)
+		assert.Equal(t, "github.com/blabla", imports[1].Full)
+		assert.Equal(t, "blabla", imports[1].Alias)
 	})
 }
