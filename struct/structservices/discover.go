@@ -71,7 +71,7 @@ func (d *Discover) Project(path string) ([]structmodels.File, error) {
 
 	var files []structmodels.File
 	for _, file := range d.files {
-		if file.ContentType == content.Go {
+		if file.ContentType == content.Go || file.Name == "go.mod" {
 			files = append(files, file)
 		}
 	}

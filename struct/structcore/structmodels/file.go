@@ -18,7 +18,7 @@ type File struct {
 	Functions   []Method
 }
 
-func (f *File) Print(identation string) {
-	fmt.Printf("%s%s, %s, %s, %s, %s\n", identation, f.Type, f.ContentType, f.Package, f.Name, f.Path)
+func (f *File) Print() {
+	fmt.Printf("%s, %s, %s, %s, %s\n", f.Type, f.ContentType, f.Package, f.Name, f.Path)
 	fmt.Println(f.Imports.String())
 }
